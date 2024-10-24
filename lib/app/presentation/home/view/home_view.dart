@@ -1,70 +1,28 @@
 import 'dart:developer';
 
-import 'package:geolocator/geolocator.dart';
-import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/screens/city_screen.dart';
-import 'package:weather_app/services/location_services.dart';
-import 'package:weather_app/services/network_services.dart';
-import 'package:weather_app/utilities/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+import 'package:weather_app/app/presentation/city/view/city_view.dart';
+import 'package:weather_app/app/presentation/home/business_logic/home_view_biz_logic.dart';
+import 'package:weather_app/common/constants/app_text_style.dart';
+
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
-  WeatherModel? weatherModel;
-  bool isLoading = true;
+class _HomeViewState extends State<HomeView> {
+  final _bizLogic = HomeViewBizLogic();
 
   @override
   void initState() {
     super.initState();
 
-    getCurrentPosition();
-  }
-
-  Future<void> getWeatherByLocation(String lat, String lon) async {
-    final WeatherModel weatherData = await networkServices.getWeatherByLocation(lat: '42.8667092', lon: '74.5814769');
-
-    log('weatherData $weatherData');
-    // log('weatherData ${weatherData['main']['temp']}');
-
-    setState(() {
-      // celcius = weatherData['main']['temp'];
-      // celcius = weatherData.main.temp;
-      // // description = weatherData['weather'][0]['description'];
-      // description = weatherData.weather.first.description;
-
-      weatherModel = weatherData;
-      isLoading = false;
-    });
-  }
-
-  Future<void> getWeatherByCityName(String city) async {
-    final weatherData = await networkServices.getWeatherByCityName(cityName: city);
-
-    log('weatherData $weatherData');
-    // log('weatherData ${weatherData['main']['temp']}');
-
-    setState(() {
-      // celcius = weatherData.main.temp;
-      // description = weatherData.weather.first.description;
-
-      weatherModel = weatherData;
-      isLoading = false;
-    });
-  }
-
-  Future<void> getCurrentPosition() async {
-    final Position position = await LocationServices.determinePosition();
-
-    log('position.latitude ${position.latitude}');
-    log('position.longitude ${position.longitude}');
-
-    await getWeatherByLocation(position.latitude.toString(), position.longitude.toString());
+    _bizLogic.getWeatherByLocation(
+      () => setState(() {}),
+    );
   }
 
   @override
@@ -80,7 +38,7 @@ class _LocationScreenState extends State<LocationScreen> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: isLoading
+            child: _bizLogic.state.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(
                     color: Colors.white,
@@ -102,19 +60,19 @@ class _LocationScreenState extends State<LocationScreen> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              String? kelgenShaarAty = await Navigator.push(context, MaterialPageRoute(
+                              String? city = await Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
-                                  return CityScreen();
+                                  return const CityView();
                                 },
                               ));
 
-                              log('kelgenShaarAty $kelgenShaarAty');
+                              log('city $city');
 
-                              if (kelgenShaarAty != null) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                await getWeatherByCityName(kelgenShaarAty);
+                              if (city != null) {
+                                _bizLogic.getWeatherByCityName(
+                                  city,
+                                  () => setState(() {}),
+                                );
                               }
                             },
                             child: const Icon(
@@ -137,7 +95,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       Row(
                         children: <Widget>[
                           Text(
-                            '${weatherModel!.main.temp.toString()} °',
+                            '${_bizLogic.state.weather?.main.temp.toString()} °',
                             style: AppTextStyle.tempTextStyle,
                           ),
                           const Text(
@@ -149,7 +107,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 18.0),
                         child: Text(
-                          weatherModel!.weather.first.description,
+                          _bizLogic.state.weather?.weather.first.description ?? '',
                           textAlign: TextAlign.right,
                           style: AppTextStyle.messageTextStyle,
                         ),

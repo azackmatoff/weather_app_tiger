@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/utilities/app_constants.dart';
+import 'package:weather_app/app/data/home/models/weather_model.dart';
+import 'package:weather_app/common/constants/api_constants.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkServices {
@@ -12,7 +12,7 @@ class NetworkServices {
     required String lon,
   }) async {
     try {
-      final url = '${AppConstants.apiBaseUrl}?lat=$lat&lon=$lon&units=metric&appid=${AppConstants.apiKey}';
+      final url = '${ApiConstants.apiBaseUrl}?lat=$lat&lon=$lon&units=metric&appid=${ApiConstants.apiKey}';
       Uri uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200) {
@@ -30,7 +30,7 @@ class NetworkServices {
     required String cityName,
   }) async {
     try {
-      final url = '${AppConstants.apiBaseUrl}?q=$cityName&units=metric&appid=${AppConstants.apiKey}';
+      final url = '${ApiConstants.apiBaseUrl}?q=$cityName&units=metric&appid=${ApiConstants.apiKey}';
       Uri uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200) {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoadingScreen extends StatefulWidget {
+class LoadingView extends StatefulWidget {
+  const LoadingView({super.key});
+
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  _LoadingViewState createState() => _LoadingViewState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingViewState extends State<LoadingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

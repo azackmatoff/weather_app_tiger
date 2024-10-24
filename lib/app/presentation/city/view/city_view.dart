@@ -1,21 +1,21 @@
-import 'dart:developer';
-
-import 'package:weather_app/utilities/app_text_style.dart';
+import 'package:weather_app/common/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-class CityScreen extends StatefulWidget {
+class CityView extends StatefulWidget {
+  const CityView({super.key});
+
   @override
-  _CityScreenState createState() => _CityScreenState();
+  _CityViewState createState() => _CityViewState();
 }
 
-class _CityScreenState extends State<CityScreen> {
-  String shaarAti = '';
+class _CityViewState extends State<CityView> {
+  String city = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/nature.jpg'),
             fit: BoxFit.cover,
@@ -32,7 +32,7 @@ class _CityScreenState extends State<CityScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_back_ios,
                       size: 50.0,
                     ),
@@ -40,7 +40,7 @@ class _CityScreenState extends State<CityScreen> {
                 ),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_city,
                       size: 24.0,
                       color: Colors.white,
@@ -51,9 +51,9 @@ class _CityScreenState extends State<CityScreen> {
                         style: AppTextStyle.textFormFieldTextStyle.copyWith(
                           color: Colors.black,
                         ),
-                        onChanged: (String jazilganText) {
+                        onChanged: (String value) {
                           setState(() {
-                            shaarAti = jazilganText;
+                            city = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -81,9 +81,9 @@ class _CityScreenState extends State<CityScreen> {
                 TextButton(
                   onPressed: () {
                     // Navigator.of(context).pop(shaarAti);
-                    Navigator.pop(context, shaarAti);
+                    Navigator.pop(context, city);
                   },
-                  child: Text(
+                  child: const Text(
                     'Get Weather',
                     style: AppTextStyle.buttonTextStyle,
                   ),
