@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:weather_app/app/presentation/city/view/city_view.dart';
-import 'package:weather_app/app/presentation/home/business_logic/home_view_biz_logic.dart';
+import 'package:weather_app/app/presentation/home/flutter-way/set_state/business_logic/home_view_biz_logic.dart';
 import 'package:weather_app/common/constants/app_text_style.dart';
 
 class HomeView extends StatefulWidget {
