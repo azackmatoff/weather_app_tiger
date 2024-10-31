@@ -1,7 +1,7 @@
-import 'package:weather_app/app/data/home/models/weather_model.dart';
+import 'package:weather_app/app/data/home/models/weather_response.dart';
 
 class HomeViewBizLogicTwoState {
-  final WeatherModel? weather;
+  final WeatherResponse? weather;
   final bool isLoading;
 
   const HomeViewBizLogicTwoState({
@@ -10,7 +10,7 @@ class HomeViewBizLogicTwoState {
   });
 
   HomeViewBizLogicTwoState copyWith({
-    WeatherModel? weather,
+    WeatherResponse? weather,
     bool? isLoading,
   }) {
     return HomeViewBizLogicTwoState(
